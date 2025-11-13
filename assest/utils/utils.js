@@ -1,10 +1,10 @@
-let base_url = window.location.href;
+let base_url = window.location.pathname;
 let preFix = "";
-if (base_url.includes("index")) {
+
+if (base_url.includes("assest/pages")) {
+    preFix = "./";
+} else {
     preFix = "./assest/pages/";
-}
-else {
-    preFix = "";
 }
 
 window.onload = function () {
@@ -12,13 +12,14 @@ window.onload = function () {
     const currentPath = window.location.pathname;
 
     navLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPath || currentPath.includes(link.getAttribute('href'))) {
+        const href = link.getAttribute('href');
+        if (currentPath.endsWith(href.split('/').pop())) {
             link.classList.add('active');
         }
     });
 };
 
-const isIndexPage = base_url.includes("index") || base_url.endsWith("/");
+const isIndexPage = base_url.endsWith("/") || base_url.endsWith("index.html");
 
 let cartIcon = "";
 if (isIndexPage) {
@@ -35,7 +36,7 @@ if (isIndexPage) {
 let nav = `
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand fs-2 fw-semibold" href="#">Wall<span class="text-danger"> Lamp</span></a>
+            <a class="navbar-brand fs-2 fw-semibold" href="/">Wall<span class="text-danger"> Lamp</span></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +46,7 @@ let nav = `
             id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/index.html">Home</a>
+                        <a class="nav-link" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${preFix}add_product.html">Add Product</a>
@@ -62,17 +63,21 @@ let nav = `
             </div>
         </div>
     </nav>
-`
+`;
 
 const header = document.querySelector('header').innerHTML = nav;
 
 export default header;
 
 let p = `
-    <p class="bg-body-tertiary py-3 d-flex align-items-center justify-content-center mb-0">2025 @ Copyright |
-        Developed by : <a href="javascript:void(0)" class="text-decoration-none"><span class="text-danger ms-1">Pooja Patel</span></a>
+    <p class="bg-body-tertiary py-3 d-flex align-items-center justify-content-center mb-0">
+        2025 @ Copyright |
+        Developed by :
+        <a href="javascript:void(0)" class="text-decoration-none">
+            <span class="text-danger ms-1">Pooja Patel</span>
+        </a>
     </p>
-`
+`;
 
 export const footer = document.querySelector('footer').innerHTML = p;
 
