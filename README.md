@@ -16,8 +16,8 @@ https://pr9-addtocart.vercel.app/
 - Display a list of products.  
 - Add products to the cart.  
 - View cart contents and quantity.  
-- Remove or reduce item quantity from cart (if implemented).  
-- Responsive UI (assuming).  
+- Remove or reduce item quantity from cart 
+- Responsive UI 
 - Demo‐friendly and ready for customization.
 
 ## Tech Stack
