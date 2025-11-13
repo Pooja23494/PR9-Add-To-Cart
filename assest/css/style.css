@@ -1,0 +1,14 @@
+.nav-link {
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link.active {
+    color: #dc3545 !important;
+    font-weight: 400 !important;
+}
+
+.nav-link:hover {
+    color: #dc3545 !important;
+    font-weight: 400 !important;
+}
