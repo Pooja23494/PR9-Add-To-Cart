@@ -1,6 +1,8 @@
 import header from "../utils/utils.js";
 
 let productTbl = document.querySelector(".product-data .row");
+const search = document.getElementById("search");
+
 
 const defaultProducts = [
     {
@@ -55,6 +57,7 @@ const defaultProducts = [
 ];
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
+
 if (products.length === 0) {
     products = defaultProducts;
     localStorage.setItem("products", JSON.stringify(products));
@@ -62,27 +65,28 @@ if (products.length === 0) {
 
 let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
 
-const displayProduct = () => {
+const displayProduct = (data = products) => {
     productTbl.innerHTML = "";
-    products.forEach((product) => {
+
+    data.forEach((product) => {
         const { image, pname, price, description, id } = product;
 
         let col = document.createElement("div");
         col.classList.add("col-md-3", "mb-4");
 
         col.innerHTML = `
-      <div class="card h-100 shadow-sm">
-        <img src="${image}" class="card-img-top" height="250px" alt="${pname}">
-        <div class="card-body">
-          <h5 class="card-title">${pname}</h5>
-          <h6 class="card-subtitle pt-2 text-success fw-bold">₹ ${price}</h6>
-          <p class="card-text pt-2 text-muted">${description}</p>
-        </div>
-        <div class="card-footer border-0 text-center bg-transparent">
-          <button class="btn btn-danger w-100" onclick="addToCart(${id})">Add to Cart</button>
-        </div>
-      </div>
-    `;
+            <div class="card h-100 shadow-sm">
+                <img src="${image}" class="card-img-top" height="250px" alt="${pname}">
+                <div class="card-body">
+                    <h5 class="card-title">${pname}</h5>
+                    <h6 class="card-subtitle pt-2 text-success fw-bold">₹ ${price}</h6>
+                    <p class="card-text pt-2 text-muted">${description}</p>
+                </div>
+                <div class="card-footer border-0 text-center bg-transparent">
+                    <button class="btn btn-danger w-100" onclick="addToCart(${id})">Add to Cart</button>
+                </div>
+            </div>
+       `;
         productTbl.appendChild(col);
     });
 };
@@ -90,11 +94,11 @@ const displayProduct = () => {
 displayProduct();
 
 const addToCart = (id) => {
-    let product = products.find((value) => value.id == id);
-    let isAvailable = cartData.findIndex(value => value.id == id);
+    let product = products.find((p) => p.id == id);
+    let index = cartData.findIndex((item) => item.id == id);
 
-    if (isAvailable != -1) {
-        cartData[isAvailable].qty++;
+    if (index !== -1) {
+        cartData[index].qty++;
     } else {
         product.qty = 1;
         cartData.push(product);
@@ -104,13 +108,23 @@ const addToCart = (id) => {
     alert("✅ Product added to cart!");
     updateCartCount();
 };
-
 window.addToCart = addToCart;
 
 const updateCartCount = () => {
-    let cartData = JSON.parse(localStorage.getItem("cartData")) || [];
-    let count = cartData.length;
     let badge = document.querySelector(".badge.bg-danger");
-    if (badge) badge.textContent = count;
+    if (!badge) return;
+
+    let cart = JSON.parse(localStorage.getItem("cartData")) || [];
+    badge.textContent = cart.length;
 };
+
 updateCartCount();
+
+search.addEventListener("input", function () {
+
+    let filterData = products.filter(product =>
+        product.pname.toLowerCase().includes(this.value.toLowerCase())
+    );
+
+    displayProduct(filterData);
+});
